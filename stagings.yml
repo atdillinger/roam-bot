@@ -1,10 +1,12 @@
 Providence:
-  S9X-AX:
-    LinkNet <LINE>
-  XHQ-7V:
-    Curatores Veritatis Alliance <CVA>
+  HP-6Z6:
+    group: Deep Space Alliance <ADS>
   JEIV-E:
-    The Rogue Consortium <T.R.C.>
+    group: The Rogue Consortium <T.R.C>
+  S9X-AX:
+    group: LinkNet <LINE>
+  XHQ-7V:
+    group: Curatores Veritatis Alliance <CVA>
 Catch:
   ERVK-P:
     group: Red Alliance <RED>
@@ -21,11 +23,13 @@ Scalding Pass:
 Querious:
   P-ZMZV:
     group: Dracarys. <D.C>
+  OGY-6D:
+    group: Brave Collective <BRAVE>
 Wicked Creek:
   SR-4EK:
     group: Triumvirate. <TRI>
 Deteroid:
-77S8-E:
+  77S8-E:
     group: Gentlemen's.Club <GCLUB>
 Esoteria:
   D-PNP9:
@@ -38,10 +42,7 @@ Pure Blind:
     group: Synergy of Steel <SYN>
 Branch:
   BKG-Q2:
-    group: Fraternity. <FRT>
-Querious:
-  OGY-6D:
-    group: Brave Collective <BRAVE>
+    group: Fraternity. <FRT> / Siberian Squads <SB-SQ> / Azure Citizen <AZURE>
 Delve:
   1DQ1-A:
     group: Goonswarm Federation <CONDI>
@@ -51,3 +52,34 @@ Paragon Soul:
 Vale of the Silent:
   4-HWWF:
     group: Fraternity. <FRT>
+Black Rise:
+  Rakapas:
+    group: Snuffed Out <BBC>
+Curse:
+  D87E-A:
+    group: UA Fleets <UAFL>
+  G-0Q86:
+    group: DECOY <DECOY>
+Derelik:
+  Camal:
+    group: REKKINGCREW. <-RC->
+Feythabolis:
+  RIT-A7:
+    group: ZERG REBORN <ZERG>
+  PO-3QF:
+    group: HOLD MY PROBS <PROB>
+Fountain:
+  B17O-R:
+    group: The Initiative. <INIT.>
+Omist:
+  AXDX-F:
+    group: Mohist Alliance <MO.>
+Perrigen Falls:
+  MJ-5F9:
+    group: Pandemic Horde <REKTD>
+Stain:
+  4GQ-XQ:
+    group: Ferrata Victrix <FERRA> / Legion of xXDEATHXx <X.I.X.>
+Syndicate:
+  PC9-AY:
+    group: Ivy League <IVY> / United Federation of Conifers <.UFC.>
