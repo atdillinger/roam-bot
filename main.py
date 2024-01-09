@@ -3,6 +3,7 @@ import os
 import random
 import requests
 import logging
+import re
 
 import discord
 from discord.ext import commands
@@ -59,5 +60,18 @@ async def roam(ctx):
                     group = value["group"]
                     await ctx.send(f"Region: {region}\nSystem: {system_name}\nOut Sig: {out_sig}\nLife remaining*: {life} hours\nDistance to {group} in {key}: {jumps}")
 
+@bot.command()
+async def jita(ctx):
+    """Closet Jita all HS"""
+
+    get_route_length_response = requests.get(f'https://api.eve-scout.com/v2/public/routes/signatures?from=Jita&system_name=Thera&preference=safer')
+    route_data = get_route_length_response.json()
+    for paths in route_data:
+        jumps = paths["jumps"]
+        thera_enterance = paths["to"]
+
+        wh_regex = re.compile('[a-zA-Z]\d{6}')
+        if paths["jumps"] <= 8 and not bool(re.search(wh_regex, thera_enterance)):
+            await ctx.send(f"{thera_enterance} is {jumps} from Jita!")
 
 bot.run(api_token)
