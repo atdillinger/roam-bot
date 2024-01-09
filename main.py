@@ -42,6 +42,7 @@ async def on_ready():
 async def roam(ctx):
     """Lists connnections that we can roam from"""
 
+    connections = False
     eve_scout_list_response = requests.get('https://api.eve-scout.com/v2/public/signatures')
     thera_connections = eve_scout_list_response.json()
     for system in thera_connections:
@@ -58,7 +59,11 @@ async def roam(ctx):
                     route_data = get_route_length_response.json()
                     jumps = route_data[0]["jumps"]
                     group = value["group"]
+                    connections = True
                     await ctx.send(f"Region: {region}\nSystem: {system_name}\nOut Sig: {out_sig}\nLife remaining*: {life} hours\nDistance to {group} in {key}: {jumps}")
+
+    if not connections:
+        await ctx.send(f"No connections from target regions up!")
 
 @bot.command()
 async def jita(ctx):
