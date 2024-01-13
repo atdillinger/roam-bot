@@ -11,6 +11,8 @@ import yaml
 
 from pprint import pprint
 
+logging.basicConfig(level=logging.INFO)
+
 api_token = os.environ["DISCORD_KEY"]
 # This example requires the 'members' and 'message_content' privileged intents to function.
 
@@ -52,10 +54,13 @@ async def roam(ctx):
             wh_regex = re.compile('[a-zA-Z]\d{6}')
             if jumps <= 10 and not bool(re.search(wh_regex, thera_exit)):
                 connections = True
+                logging.info(f"{jumps} jumps from {group} in {staging_system} using {thera_exit}!")
                 await ctx.send(f"{jumps} jumps from {group} in {staging_system} using {thera_exit}!")
 
     if not connections:
-        await ctx.send(f"No connections from target regions up!")
+        logging.info(("No connections from target regions up!"))
+        await ctx.send("No connections from target regions up!")
+    logging.info("!roam complete...")
 
 
 @bot.command()
@@ -70,11 +75,15 @@ async def jita(ctx):
 
         wh_regex = re.compile('[a-zA-Z]\d{6}')
         if paths["jumps"] <= 8 and not bool(re.search(wh_regex, thera_enterance)):
+            logging.info(f"{thera_enterance} is {jumps} from Jita!")
             await ctx.send(f"{thera_enterance} is {jumps} from Jita!")
         else:
             no_connections_close = True
     
     if no_connections_close:
-        await ctx.send(f"No connections within 8 jumps from Jita!")
+        logging.info("No connections within 8 jumps from Jita!")
+        await ctx.send("No connections within 8 jumps from Jita!")
+
+    logging.info("!jita complete...")
 
 bot.run(api_token)
