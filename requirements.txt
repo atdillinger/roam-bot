@@ -1,0 +1,9 @@
+pytest==6.2.5
+flake8==4.0.1
+flake8-isort==4.1.1
+bandit==1.7.4
+brunette==0.2.8
+
+discord.py==2.3.2
+requests==2.31.0
+pyyaml==6.0.1
