@@ -30,7 +30,7 @@ bot = commands.Bot(command_prefix="!", description=description, intents=intents)
 with open('stagings.yml', 'r') as file:
     stagings = yaml.safe_load(file)
 
-target_regions = list(stagings.keys())
+target_systems = list(stagings.keys())
 
 @bot.event
 async def on_ready():
@@ -41,29 +41,22 @@ async def on_ready():
 @bot.command()
 async def roam(ctx):
     """Lists connnections that we can roam from"""
-
     connections = False
-    eve_scout_list_response = requests.get('https://api.eve-scout.com/v2/public/signatures')
-    thera_connections = eve_scout_list_response.json()
-    for system in thera_connections:
-        if system["out_system_name"] == "Thera":
-            if system["in_region_name"] in target_regions:
-                
-                region = system["in_region_name"]
-                dest_staging = stagings[region]
-                for key, value in stagings[region].items():
-                    life = system["remaining_hours"]
-                    out_sig = system["out_signature"]
-                    system_name = system["in_system_name"]
-                    get_route_length_response = requests.get(f'https://api.eve-scout.com/v2/public/routes?from={system_name}&to={key}&preference=shortest-gates')
-                    route_data = get_route_length_response.json()
-                    jumps = route_data[0]["jumps"]
-                    group = value["group"]
-                    connections = True
-                    await ctx.send(f"Region: {region}\nSystem: {system_name}\nOut Sig: {out_sig}\nLife remaining*: {life} hours\nDistance to {group} in {key}: {jumps}")
+    for staging_system in target_systems:
+        get_route_length_response = requests.get(f'https://api.eve-scout.com/v2/public/routes/signatures?from={staging_system}&system_name=Thera&preference=shortest-gates')
+        route_data = get_route_length_response.json()
+        for path in route_data:
+            jumps = path["jumps"]
+            thera_exit = path["to"]
+            group = stagings[staging_system]["group"]
+            wh_regex = re.compile('[a-zA-Z]\d{6}')
+            if jumps <= 10 and not bool(re.search(wh_regex, thera_exit)):
+                connections = True
+                await ctx.send(f"{jumps} jumps from {group} in {staging_system} using {thera_exit}!")
 
     if not connections:
         await ctx.send(f"No connections from target regions up!")
+
 
 @bot.command()
 async def jita(ctx):
