@@ -55,8 +55,10 @@ async def roam(ctx):
             if jumps <= 10 and not bool(re.search(wh_regex, thera_exit)):
                 connections = True
                 logging.info(f"{jumps} jumps from {group} in {staging_system} using {thera_exit}!")
-                await ctx.send(f"{jumps} jumps from {group} in {staging_system} using {thera_exit}!")
-
+                embed = discord.Embed()
+                link = f"https://eve-gatecheck.space/eve/#{thera_exit}:{staging_system}:shortest"
+                embed.description = f"{jumps} jumps from {group} in {staging_system} using [{thera_exit}]({link})!"
+                await ctx.send(embed=embed)
     if not connections:
         logging.info(("No connections from target regions up!"))
         await ctx.send("No connections from target regions up!")
@@ -78,7 +80,10 @@ async def jita(ctx):
         wh_regex = re.compile(r"[a-zA-Z]\d{6}")
         if paths["jumps"] <= 8 and not bool(re.search(wh_regex, thera_enterance)):
             logging.info(f"{thera_enterance} is {jumps} from Jita!")
-            await ctx.send(f"{thera_enterance} is {jumps} from Jita!")
+            embed = discord.Embed()
+            link = f"https://eve-gatecheck.space/eve/#{thera_enterance}:Jita:shortest"
+            embed.description = f"{thera_enterance} is {jumps} from [Jita]({link})!"
+            await ctx.send(embed=embed)
         else:
             no_connections_close = True
 
