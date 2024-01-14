@@ -68,7 +68,7 @@ async def roam(ctx):
 @bot.command()
 async def jita(ctx):
     """Closet Jita all HS"""
-    no_connections_close = False
+    connections = False
     get_route_length_response = requests.get(
         "https://api.eve-scout.com/v2/public/routes/signatures?from=Jita&system_name=Thera&preference=safer"
     )
@@ -76,18 +76,16 @@ async def jita(ctx):
     for paths in route_data:
         jumps = paths["jumps"]
         thera_enterance = paths["to"]
-
         wh_regex = re.compile(r"[a-zA-Z]\d{6}")
         if paths["jumps"] <= 8 and not bool(re.search(wh_regex, thera_enterance)):
+            connections = True
             logging.info(f"{thera_enterance} is {jumps} from Jita!")
             embed = discord.Embed()
             link = f"https://eve-gatecheck.space/eve/#{thera_enterance}:Jita:shortest"
             embed.description = f"{thera_enterance} is {jumps} from [Jita]({link})!"
             await ctx.send(embed=embed)
-        else:
-            no_connections_close = True
 
-    if no_connections_close:
+    if not connections:
         logging.info("No connections within 8 jumps from Jita!")
         await ctx.send("No connections within 8 jumps from Jita!")
 
