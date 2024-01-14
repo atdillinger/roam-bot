@@ -1,15 +1,12 @@
 #!./.venv/bin/python3
-import os
-import random
-import requests
 import logging
+import os
 import re
 
 import discord
-from discord.ext import commands
+import requests
 import yaml
-
-from pprint import pprint
+from discord.ext import commands
 
 logging.basicConfig(level=logging.INFO)
 
@@ -29,10 +26,11 @@ intents.message_content = True
 bot = commands.Bot(command_prefix="!", description=description, intents=intents)
 
 
-with open('stagings.yml', 'r') as file:
+with open("stagings.yml", "r") as file:
     stagings = yaml.safe_load(file)
 
 target_systems = list(stagings.keys())
+
 
 @bot.event
 async def on_ready():
@@ -45,13 +43,15 @@ async def roam(ctx):
     """Lists connnections that we can roam from"""
     connections = False
     for staging_system in target_systems:
-        get_route_length_response = requests.get(f'https://api.eve-scout.com/v2/public/routes/signatures?from={staging_system}&system_name=Thera&preference=shortest-gates')
+        get_route_length_response = requests.get(
+            f"https://api.eve-scout.com/v2/public/routes/signatures?from={staging_system}&system_name=Thera&preference=shortest-gates"  # noqa: E501
+        )
         route_data = get_route_length_response.json()
         for path in route_data:
             jumps = path["jumps"]
             thera_exit = path["to"]
             group = stagings[staging_system]["group"]
-            wh_regex = re.compile('[a-zA-Z]\d{6}')
+            wh_regex = re.compile(r"[a-zA-Z]\d{6}")
             if jumps <= 10 and not bool(re.search(wh_regex, thera_exit)):
                 connections = True
                 logging.info(f"{jumps} jumps from {group} in {staging_system} using {thera_exit}!")
@@ -67,23 +67,26 @@ async def roam(ctx):
 async def jita(ctx):
     """Closet Jita all HS"""
     no_connections_close = False
-    get_route_length_response = requests.get(f'https://api.eve-scout.com/v2/public/routes/signatures?from=Jita&system_name=Thera&preference=safer')
+    get_route_length_response = requests.get(
+        "https://api.eve-scout.com/v2/public/routes/signatures?from=Jita&system_name=Thera&preference=safer"
+    )
     route_data = get_route_length_response.json()
     for paths in route_data:
         jumps = paths["jumps"]
         thera_enterance = paths["to"]
 
-        wh_regex = re.compile('[a-zA-Z]\d{6}')
+        wh_regex = re.compile(r"[a-zA-Z]\d{6}")
         if paths["jumps"] <= 8 and not bool(re.search(wh_regex, thera_enterance)):
             logging.info(f"{thera_enterance} is {jumps} from Jita!")
             await ctx.send(f"{thera_enterance} is {jumps} from Jita!")
         else:
             no_connections_close = True
-    
+
     if no_connections_close:
         logging.info("No connections within 8 jumps from Jita!")
         await ctx.send("No connections within 8 jumps from Jita!")
 
     logging.info("!jita complete...")
+
 
 bot.run(api_token)
