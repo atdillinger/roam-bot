@@ -12,6 +12,7 @@ $(VENV)::$(CURDIR)/requirements.txt
 
 dev:
 	$(MAKE) $(VENV)
+	$(MAKE) install-githooks
 
 
 lint:
@@ -19,6 +20,10 @@ lint:
 	$(CURDIR)/.venv/bin/flake8
 	$(CURDIR)/.venv/bin/bandit -lll -r $(CURDIR)/main.py
 	$(CURDIR)/.venv/bin/brunette --check .
+
+
+install-githooks:
+	git config --local core.hooksPath .githooks
 
 
 clean:
