@@ -81,7 +81,7 @@ async def jita(ctx):
             connections = True
             logging.info(f"{thera_enterance} is {jumps} from Jita!")
             embed = discord.Embed()
-            link = f"https://eve-gatecheck.space/eve/#{thera_enterance}:Jita:shortest"
+            link = f"https://eve-gatecheck.space/eve/#{thera_enterance}:Jita:secure"
             embed.description = f"{thera_enterance} is {jumps} from [Jita]({link})!"
             await ctx.send(embed=embed)
 
