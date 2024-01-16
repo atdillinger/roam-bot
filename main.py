@@ -92,4 +92,15 @@ async def jita(ctx):
     logging.info("!jita complete...")
 
 
+@bot.command()
+async def thera(ctx):
+    """Thera Zkill Page"""
+
+    embed = discord.Embed()
+    embed.description = "[Thera zKill](https://zkillboard.com/system/31000005/)!"
+    await ctx.send(embed=embed)
+
+    logging.info("!thera complete...")
+
+
 bot.run(api_token)
