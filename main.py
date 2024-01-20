@@ -34,8 +34,8 @@ target_systems = list(stagings.keys())
 
 @bot.event
 async def on_ready():
-    print(f"Logged in as {bot.user} (ID: {bot.user.id})")
-    print("------")
+    logging.info(f"Logged in as {bot.user} (ID: {bot.user.id})")
+    logging.info("------")
 
 
 @bot.command()
