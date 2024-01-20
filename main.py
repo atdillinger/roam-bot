@@ -96,10 +96,17 @@ async def jita(ctx):
 async def thera(ctx):
     """Thera Zkill Page"""
 
-    embed = discord.Embed()
-    embed.description = "[Thera zKill](https://zkillboard.com/system/31000005/)!"
-    await ctx.send(embed=embed)
+    get_system_kills_response = requests.get("https://zkillboard.com/api/kills/systemID/31000005/pastSeconds/3600/")
+    activity = get_system_kills_response.json()
 
+    if activity:
+        losses = len(activity[0])
+        embed = discord.Embed()
+        embed.description = f"[There have been {losses} losses in the last hour in Thera!](https://zkillboard.com/system/31000005/)!"  # noqa: E501
+        await ctx.send(embed=embed)
+    else:
+        logging.info("No activity in Thera!")
+        await ctx.send("No activity in the last hour in Thera!")
     logging.info("!thera complete...")
 
 
