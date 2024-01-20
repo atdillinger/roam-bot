@@ -22,6 +22,10 @@ lint:
 	$(CURDIR)/.venv/bin/brunette --check .
 
 
+test:
+	$(MAKE) $(VENV)
+	$(CURDIR)/.venv/bin/pytest
+
 install-githooks:
 	git config --local core.hooksPath .githooks
 

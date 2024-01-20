@@ -32,6 +32,11 @@ with open("stagings.yml", "r") as file:
 target_systems = list(stagings.keys())
 
 
+def _check_if_system_is_wormhole(system: str) -> bool:
+    wh_regex = re.compile(r"[a-zA-Z]\d{6}")
+    return bool(re.search(wh_regex, system))
+
+
 @bot.event
 async def on_ready():
     logging.info(f"Logged in as {bot.user} (ID: {bot.user.id})")
@@ -51,8 +56,8 @@ async def roam(ctx):
             jumps = path["jumps"]
             thera_exit = path["to"]
             group = stagings[staging_system]["group"]
-            wh_regex = re.compile(r"[a-zA-Z]\d{6}")
-            if jumps <= 10 and not bool(re.search(wh_regex, thera_exit)):
+
+            if jumps <= 10 and not _check_if_system_is_wormhole(system=thera_exit):
                 connections = True
                 logging.info(f"{jumps} jumps from {group} in {staging_system} using {thera_exit}!")
                 embed = discord.Embed()
