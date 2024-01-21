@@ -1,9 +1,8 @@
 import pytest
 
-from src.main import _check_if_system_is_wormhole
+from src.functions import check_if_system_is_wormhole
 
 
-@pytest.mark.parametrize("system, wh_status", [("J356666", True), ("Jita", False)])
+@pytest.mark.parametrize("system, wh_status", [("J151718", True), ("Jita", False), ("KLMT-W", False)])
 def test_check_if_system_is_wormhole(system, wh_status):
-    print("test")
-    assert _check_if_system_is_wormhole(system=system) == wh_status
+    assert check_if_system_is_wormhole(system=system) == wh_status
