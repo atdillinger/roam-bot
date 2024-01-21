@@ -18,9 +18,13 @@ dev:
 lint:
 	$(MAKE) $(VENV)
 	$(CURDIR)/.venv/bin/flake8
-	$(CURDIR)/.venv/bin/bandit -lll -r $(CURDIR)/main.py
+	$(CURDIR)/.venv/bin/bandit -lll -r $(CURDIR)/src
 	$(CURDIR)/.venv/bin/brunette --check .
 
+
+test:
+	$(MAKE) $(VENV)
+	$(CURDIR)/.venv/bin/pytest
 
 install-githooks:
 	git config --local core.hooksPath .githooks
