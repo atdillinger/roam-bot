@@ -37,7 +37,7 @@ def anaylze_thera():
         return f"[There have been {losses} losses in the last hour in Thera!](https://zkillboard.com/system/31000005/)!"  # noqa: E501
 
     else:
-        logging.debug("No activity in Thera!")
+        logging.debug("No activity in the last hour in Thera!")
         return "No activity in the last hour in Thera!"
 
 
@@ -81,7 +81,7 @@ def analyze_jita():
             connections = True
             logging.debug(f"{thera_enterance} is {jumps} from Jita!")
 
-            yield f"https://eve-gatecheck.space/eve/#{thera_enterance}:Jita:secure"
+            yield f"{thera_enterance} is {jumps} from [Jita](https://eve-gatecheck.space/eve/#{thera_enterance}:Jita:secure)!"  # noqa: E501
 
     if not connections:
         logging.debug("No connections within 8 jumps from Jita!")

@@ -75,9 +75,10 @@ async def roam(ctx):
     """Lists connnections that we can roam from"""
 
     embed = discord.Embed()
-    message = analyze_thera_exits()
-    embed.description = message
-    await ctx.send(embed=embed)
+    messages = analyze_thera_exits()
+    for message in messages:
+        embed.description = message
+        await ctx.send(embed=embed)
 
     logging.info("!roam complete...")
 
@@ -87,9 +88,10 @@ async def jita(ctx):
     """Closet Jita all HS"""
 
     embed = discord.Embed()
-    message = analyze_jita()
-    embed.description = message
-    await ctx.send(embed=embed)
+    messages = analyze_jita()
+    for message in messages:
+        embed.description = message
+        await ctx.send(embed=embed)
 
     logging.info("!jita complete...")
 
