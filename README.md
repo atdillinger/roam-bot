@@ -2,7 +2,7 @@
 
 1. Install docker
 1. Run: `export DISCORD_KEY=<bot key>`
-1. Run: `docker run -e DISCORD_KEY=$DISCORD_KEY adilly/roam-bot:0.0.1`
+1. Run: `docker run -e DISCORD_KEY=$DISCORD_KEY adilly/roam-bot:0.0.2`
 
 ## Running Locally
 
