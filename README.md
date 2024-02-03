@@ -17,3 +17,7 @@ I have implemented `click` commands for each developed `discord.py` command. The
 1. Run: `./src/main.py thera-local`
 1. Run: `./src/main.py jita-local`
 1. Run: `./src/main.py roam-local`
+
+
+# Reference Docs
+- https://github.com/zKillboard/zKillboard/wiki/API-(Killmails)
