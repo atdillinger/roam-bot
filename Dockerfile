@@ -1,11 +1,25 @@
-FROM ghcr.io/astral-sh/uv:python3.12-bookworm-slim
+FROM ghcr.io/astral-sh/uv:python3.12-bookworm-slim AS builder
 
 ENV UV_COMPILE_BYTECODE=1
+ENV UV_LINK_MODE=copy
 
-ADD . /app/
 
 WORKDIR /app/
 
-RUN uv sync --frozen
+# Install dependencies
+RUN --mount=type=cache,target=/root/.cache/uv \
+    --mount=type=bind,source=uv.lock,target=uv.lock \
+    --mount=type=bind,source=pyproject.toml,target=pyproject.toml \
+    uv sync --frozen --no-install-project --no-editable
 
+ADD . /app/
+
+RUN --mount=type=cache,target=/root/.cache/uv \
+    uv sync --frozen --no-editable
+
+# FROM ghcr.io/astral-sh/uv:python3.12-bookworm-slim
+#
+# COPY --from=builder --chown=app:app /app/ /app/
+
+# ENV PATH="/app/bin:$PATH"
 CMD [ "uv", "run", "roam-bot", "start" ]
