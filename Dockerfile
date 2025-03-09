@@ -17,9 +17,4 @@ ADD . /app/
 RUN --mount=type=cache,target=/root/.cache/uv \
     uv sync --frozen --no-editable
 
-# FROM ghcr.io/astral-sh/uv:python3.12-bookworm-slim
-#
-# COPY --from=builder --chown=app:app /app/ /app/
-
-# ENV PATH="/app/bin:$PATH"
 CMD [ "uv", "run", "roam-bot", "start" ]
