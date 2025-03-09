@@ -15,7 +15,11 @@ dependencies = [
 ]
 
 [project.scripts]
-roam-bot = "roam_bot:main"
+roam-bot = "roam_bot:cli"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
 
 [dependency-groups]
 dev = [
