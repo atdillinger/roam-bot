@@ -1,12 +1,13 @@
-FROM python:3.10
+FROM ghcr.io/astral-sh/uv:python3.12-bookworm-slim
 
-WORKDIR /usr/src/app
+RUN uv --version
 
-COPY requirements.txt ./
-RUN pip install --no-cache-dir -r requirements.txt # refactor; seperate requirements for dev and container
+ENV UV_COMPILE_BYTECODE=1
 
-COPY stagings.yml .
-COPY src/* .
-RUN chmod +x main.py
- 
-CMD [ "python", "main.py", "start" ]
+ADD . /app/
+
+WORKDIR /app/
+
+RUN uv sync --frozen
+
+CMD [ "uv", "run", "roam-bot", "start" ]

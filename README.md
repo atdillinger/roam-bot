@@ -6,15 +6,16 @@
 
 ## Running Locally
 
-I have implemented `click` commands for each developed `discord.py` command.
+I have implemented `click` commands for each `discord.py` command.
 
 ## Local Dev
 
 1. Run: `export DISCORD_KEY=<bot key>`
-1. Run: `./src/main.py thera-local`
-1. Run: `./src/main.py jita-local`
-1. Run: `./src/main.py roam-local`
+1. Run: `uv run roam-bot thera-local`
+1. Run: `uv run roam-bot jita-local`
+1. Run: `uv run roam-bot roam-local`
 1. `uv run pytest`
+1. `uvx ruff check`
 1. `git config --local core.hooksPath .githooks`
 
 ## Reference Docs
