@@ -1,0 +1,24 @@
+[project]
+name = "roam-bot"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+authors = [
+    { name = "Austin", email = "shuffletick@gmail.com" }
+]
+requires-python = ">=3.13"
+dependencies = [
+    "click>=8.1.8",
+    "discord-py>=2.5.2",
+    "pyyaml>=6.0.2",
+    "requests>=2.32.3",
+]
+
+[project.scripts]
+roam-bot = "roam_bot:main"
+
+[dependency-groups]
+dev = [
+    "pytest-cov>=6.0.0",
+    "pytest>=8.3.5",
+]
