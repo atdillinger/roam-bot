@@ -1,12 +1,20 @@
-FROM python:3.10
+FROM ghcr.io/astral-sh/uv:python3.12-bookworm-slim AS builder
 
-WORKDIR /usr/src/app
+ENV UV_COMPILE_BYTECODE=1
+ENV UV_LINK_MODE=copy
 
-COPY requirements.txt ./
-RUN pip install --no-cache-dir -r requirements.txt # refactor; seperate requirements for dev and container
 
-COPY stagings.yml .
-COPY src/* .
-RUN chmod +x main.py
- 
-CMD [ "python", "main.py", "start" ]
+WORKDIR /app/
+
+# Install dependencies
+RUN --mount=type=cache,target=/root/.cache/uv \
+    --mount=type=bind,source=uv.lock,target=uv.lock \
+    --mount=type=bind,source=pyproject.toml,target=pyproject.toml \
+    uv sync --frozen --no-install-project --no-editable
+
+ADD . /app/
+
+RUN --mount=type=cache,target=/root/.cache/uv \
+    uv sync --frozen --no-editable
+
+CMD [ "uv", "run", "roam-bot", "start" ]

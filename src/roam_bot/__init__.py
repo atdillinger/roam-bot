@@ -1,11 +1,10 @@
-#!./.venv/bin/python3
 import logging
 import os
 
 import click
 import discord
 
-from functions import (
+from .functions import (
     analyze_jita,
     analyze_thera_exits,
     anaylze_thera,
@@ -94,7 +93,3 @@ async def jita(ctx):
         await ctx.send(embed=embed)
 
     logging.info("!jita complete...")
-
-
-if __name__ == "__main__":
-    cli()
