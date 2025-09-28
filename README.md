@@ -17,6 +17,7 @@ I have implemented `click` commands for each `discord.py` command.
 1. `uv run pytest`
 1. `uvx ruff check`
 1. `git config --local core.hooksPath .githooks`
+1. File From: https://www.fuzzwork.co.uk/dump/latest/mapSalorSystems.csv
 
 ## Reference Docs
 

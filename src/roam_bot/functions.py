@@ -1,3 +1,4 @@
+from pprint import pprint
 import logging
 import re
 
@@ -5,6 +6,8 @@ import discord
 import requests
 import yaml
 from discord.ext import commands
+
+from .system_map import SYSTEM_MAP
 
 
 def configure_discord_bot():
@@ -23,22 +26,26 @@ def check_if_system_is_wormhole(system: str) -> bool:
     return bool(re.search(wh_regex, system))
 
 
-def anaylze_thera():
-    """Thera Zkill Page"""
+def analyze_system(system_name: str):
+    """System Zkill Page"""
 
-    get_system_kills_response = requests.get("https://zkillboard.com/api/kills/systemID/31000005/pastSeconds/3600/")
+    system_id = SYSTEM_MAP[system_name.lower()]
+
+    get_system_kills_response = requests.get(
+        f"https://zkillboard.com/api/kills/systemID/{system_id}/pastSeconds/3600/"
+    )
     activity = get_system_kills_response.json()
 
     if activity:
         losses = len(activity[0])
         logging.debug(
-            f"[There have been {losses} losses in the last hour in Thera!](https://zkillboard.com/system/31000005/)!"
+            f"[There have been {losses} losses in the last hour in {system_name}!](https://zkillboard.com/system/{system_id}/)!"
         )
-        return f"[There have been {losses} losses in the last hour in Thera!](https://zkillboard.com/system/31000005/)!"  # noqa: E501
+        return f"[There have been {losses} losses in the last hour in {system_name}!](https://zkillboard.com/system/{system_id}/)!"  # noqa: E501
 
     else:
-        logging.debug("No activity in the last hour in Thera!")
-        return "No activity in the last hour in Thera!"
+        logging.debug(f"No activity in the last hour in {system_name}!")
+        return f"No activity in the last hour in {system_name}!"
 
 
 def analyze_thera_exits():
@@ -60,7 +67,38 @@ def analyze_thera_exits():
 
             if jumps <= 10 and not check_if_system_is_wormhole(system=thera_exit):
                 connections = True
-                logging.debug(f"{jumps} jumps from {group} in {staging_system} using {thera_exit}!")
+                logging.debug(
+                    f"{jumps} jumps from {group} in {staging_system} using {thera_exit}!"
+                )
+                link = f"https://eve-gatecheck.space/eve/#{thera_exit}:{staging_system}:shortest"
+                yield f"{jumps} jumps from {group} in {staging_system} using [{thera_exit}]({link})!"
+    if not connections:
+        logging.debug(("No connections from target regions up!"))
+        yield "No connections from target regions up!"
+
+
+def analyze_turnur_exits():
+    with open("stagings.yml", "r") as file:
+        stagings = yaml.safe_load(file)
+
+    target_systems = list(stagings.keys())
+
+    connections = False
+    for staging_system in target_systems:
+        get_route_length_response = requests.get(
+            f"https://api.eve-scout.com/v2/public/routes/signatures?from={staging_system}&system_name=Turnur&preference=shortest-gates"  # noqa: E501
+        )
+        route_data = get_route_length_response.json()
+        for path in route_data:
+            jumps = path["jumps"]
+            thera_exit = path["to"]
+            group = stagings[staging_system]["group"]
+
+            if jumps <= 10 and not check_if_system_is_wormhole(system=thera_exit):
+                connections = True
+                logging.debug(
+                    f"{jumps} jumps from {group} in {staging_system} using {thera_exit}!"
+                )
                 link = f"https://eve-gatecheck.space/eve/#{thera_exit}:{staging_system}:shortest"
                 yield f"{jumps} jumps from {group} in {staging_system} using [{thera_exit}]({link})!"
     if not connections:
@@ -77,7 +115,9 @@ def analyze_jita():
     for paths in route_data:
         jumps = paths["jumps"]
         thera_enterance = paths["to"]
-        if paths["jumps"] <= 8 and not check_if_system_is_wormhole(system=thera_enterance):
+        if paths["jumps"] <= 8 and not check_if_system_is_wormhole(
+            system=thera_enterance
+        ):
             connections = True
             logging.debug(f"{thera_enterance} is {jumps} from Jita!")
 
