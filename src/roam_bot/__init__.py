@@ -3,18 +3,27 @@ import os
 
 import click
 import discord
+from discord.ext import commands
 
-from .functions import (
-    analyze_jita,
-    analyze_thera_exits,
-    anaylze_thera,
-    configure_discord_bot,
+from .lossboard import (
+    analyze_system,
 )
+from .roam import roam
+from .connect import connect
 
 logging.basicConfig(level=logging.INFO)
 
+description = "Discord Bot for Analyzing Roaming from Thera"
+discord.VoiceClient.warn_nacl = False
 
-bot = configure_discord_bot()
+intents = discord.Intents.default()
+intents.members = True
+intents.message_content = True
+
+bot = commands.Bot(command_prefix="!", description=description, intents=intents)
+
+
+GLOBAL_JUMP_RANGE = 8
 
 
 @click.group()
@@ -32,64 +41,77 @@ def start():
 
 
 @cli.command()
-def thera_local():
-    logging.info(anaylze_thera())
+@click.argument("system_name")
+def check_local(system_name):
+    logging.info(analyze_system(system_name))
 
 
 @cli.command()
-def jita_local():
-    for message in analyze_jita():
+@click.argument("jump_range", default=GLOBAL_JUMP_RANGE)
+def roam_local(jump_range):
+    for message in roam(jump_range):
         logging.info(message)
 
 
 @cli.command()
-def roam_local():
-    for message in analyze_thera_exits():
+@click.argument("system_name")
+@click.argument("jump_range", default=GLOBAL_JUMP_RANGE)
+def connect_local(system_name, jump_range):
+    logging.info("starting connect local...")
+    for message in connect(system_name, jump_range):
         logging.info(message)
+    logging.info("finished connect local...")
 
 
-# DISCORD
-
-
-@bot.event
-async def on_ready():
-    logging.info(f"Logged in as {bot.user} (ID: {bot.user.id})")
-    logging.info("------")
-
-
-@bot.command()
-async def thera(ctx):
-    """Thera Zkill Page"""
+@bot.command(name="check")
+async def check_bot(ctx, system_name):
+    """System Zkill Page"""
 
     embed = discord.Embed()
-    message = anaylze_thera()
+
+    message = analyze_system(system_name)
     embed.description = message
     await ctx.send(embed=embed)
 
-    logging.info("!thera complete...")
+    logging.info(f"!check for {system_name} complete...")
 
 
-@bot.command()
-async def roam(ctx):
-    """Lists connnections that we can roam from"""
+@bot.command(name="roam")
+async def roam_bot(
+    ctx,
+    jump_range=GLOBAL_JUMP_RANGE,
+):
+    """Lists connections that we can roam from"""
 
+    logging.info("!roam starting...")
     embed = discord.Embed()
-    messages = analyze_thera_exits()
+
+    await ctx.send(f"Analyzing Thera connections within {jump_range} jumps")
+
+    messages = roam(jump_range)
     for message in messages:
         embed.description = message
         await ctx.send(embed=embed)
+
+    await ctx.send("Finished analyzing Thera connections")
 
     logging.info("!roam complete...")
 
 
-@bot.command()
-async def jita(ctx):
-    """Closet Jita all HS"""
+@bot.command(name="connect")
+async def connect_bot(ctx, system_name, jump_range=GLOBAL_JUMP_RANGE):
+    """Connection to/from Thera"""
+
+    logging.info("!connect starting...")
+    await ctx.send(
+        f"Finding Thera connections to {system_name} within {jump_range} jumps"
+    )
 
     embed = discord.Embed()
-    messages = analyze_jita()
+    messages = connect(system_name, jump_range)
     for message in messages:
         embed.description = message
         await ctx.send(embed=embed)
 
-    logging.info("!jita complete...")
+    await ctx.send("Finished analyzing Thera connections")
+    logging.info("!connect complete...")

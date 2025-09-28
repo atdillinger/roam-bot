@@ -1,6 +1,6 @@
 import pytest
 
-from src.roam_bot.functions import check_if_system_is_wormhole
+from src.roam_bot.wormhole import check_if_system_is_wormhole
 
 
 @pytest.mark.parametrize(
