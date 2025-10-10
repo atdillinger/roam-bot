@@ -1,60 +1,88 @@
-HP-6Z6:
-  group: Deep Space Alliance
-JEIV-E:
-  group: The Rogue Consortium
-S9X-AX:
-  group: LinkNet
-XHQ-7V:
-  group: Curatores Veritatis Alliance
-ERVK-P:
-  group: Red Alliance
-EX6-AO:
-  group: Dracarys.
-HP-64T:
-  group: Dracarys.
-Q5KZ-W:
-  group: Paper Numbers
-77S8-E:
-  group: Gentlemen's.Club
-8CN-CH:
-  group: Naval Defense Alliance
-P-ZMZV:
-  group: Dracarys.
-OGY-6D:
-  group: Brave Collective
-SR-4EK:
-  group: Triumvirate.
-D-PNP9:
-  group: Shadow Ultimatum
-F9-FUV:
-  group: Solyaris Chtonium
-F-NMX6:
-  group: Synergy of Steel
-BKG-Q2:
-  group: Fraternity. / Siberian Squads / Azure Citizen
-1DQ1-A:
-  group: Goonswarm Federation
 O4T-Z5:
-  group:  Sigma Grindset
-4-HWWF:
-  group: Fraternity.
-D87E-A:
-  group: UA Fleets
-G-0Q86:
-  group: DECOY
-RIT-A7:
-  group: ZERG REBORN
-PO-3QW:
-  group: HOLD MY PROBS
-B17O-R:
-  group: The Initiative.
-AXDX-F:
-  group: Mohist Alliance
-MJ-5F9:
-  group: Pandemic Horde
-4GQ-XQ:
-  group: Ferrata Victrix / Legion of xXDEATHXx
-PC9-AY:
-  group: Ivy League / United Federation of Conifers
-C3J0-O:
-  group: Pandemic Horse
+  group: Imperium - Dracarys.
+HY-RWO:
+  group: Imperium - Sigma
+UALX-3:
+  group: Imperium - Brave
+5XR-KZ:
+  group: Imperium - Shadow Ultimatum
+C-J6MT:
+  group: Imperium - Goonswarm Federation (main)
+IGC-02V:
+  group: Imperium
+TR07-S:
+  group: Imperium
+KF-GPLB:
+  group: Imperium
+X2-ZA5:
+  group: Imperium
+E8-432:
+  group: Horde
+NEU-UD:
+  group: Horde
+K7D-II:
+  group: OnlyFleets
+OGY-6D:
+  group: OnlyFleets
+49-U6U:
+  group: Legion of xXDEATHXx
+EX6-AO:
+  group: Provi Blok
+# HP-6Z6:
+#   group: Deep Space Alliance
+# JEIV-E:
+#   group: The Rogue Consortium
+# S9X-AX:
+#   group: LinkNet
+# XHQ-7V:
+#   group: Curatores Veritatis Alliance
+# ERVK-P:
+#   group: Red Alliance
+# EX6-AO:
+#   group: Dracarys.
+# HP-64T:
+#   group: Dracarys.
+# Q5KZ-W:
+#   group: Paper Numbers
+# 77S8-E:
+#   group: Gentlemen's.Club
+# 8CN-CH:
+#   group: Naval Defense Alliance
+# P-ZMZV:
+#   group: Dracarys.
+# OGY-6D:
+#   group: Brave Collective
+# SR-4EK:
+#   group: Triumvirate.
+# D-PNP9:
+#   group: Shadow Ultimatum
+# F9-FUV:
+#   group: Solyaris Chtonium
+# F-NMX6:
+#   group: Synergy of Steel
+# BKG-Q2:
+#   group: Fraternity. / Siberian Squads / Azure Citizen
+# 1DQ1-A:
+#   group: Goonswarm Federation
+# 4-HWWF:
+#   group: Fraternity.
+# D87E-A:
+#   group: UA Fleets
+# G-0Q86:
+#   group: DECOY
+# RIT-A7:
+#   group: ZERG REBORN
+# PO-3QW:
+#   group: HOLD MY PROBS
+# B17O-R:
+#   group: The Initiative.
+# AXDX-F:
+#   group: Mohist Alliance
+# MJ-5F9:
+#   group: Pandemic Horde
+# 4GQ-XQ:
+#   group: Ferrata Victrix / Legion of xXDEATHXx
+# PC9-AY:
+#   group: Ivy League / United Federation of Conifers
+# C3J0-O:
+#   group: Pandemic Horse
