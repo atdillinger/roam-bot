@@ -11,6 +11,7 @@ from .functions import (
     analyze_system,
     configure_discord_bot,
     analyze_turnur_exits,
+    analyze_siseide,
 )
 
 logging.basicConfig(level=logging.INFO)
@@ -54,6 +55,12 @@ def roam_local():
 @cli.command()
 def roam_turnur_local():
     for message in analyze_turnur_exits():
+        logging.info(message)
+
+
+@cli.command()
+def home_to_thera_local():
+    for message in analyze_siseide():
         logging.info(message)
 
 
@@ -118,3 +125,18 @@ async def jita(ctx):
         await ctx.send(embed=embed)
 
     logging.info("!jita complete...")
+
+
+@bot.command(name="siseide_to_thera", aliases=["siseide"])
+async def siseide_to_thera(ctx):
+    """Connection to/from Siseide area to Thera"""
+
+    await ctx.send("Thera connections to Siseide...")
+
+    embed = discord.Embed()
+    messages = analyze_siseide()
+    for message in messages:
+        embed.description = message
+        await ctx.send(embed=embed)
+
+    logging.info("!siseide complete...")
