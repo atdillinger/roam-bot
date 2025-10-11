@@ -106,26 +106,26 @@ def analyze_turnur_exits():
         yield "No connections from target regions up!"
 
 
-def analyze_siseide():
+def thera_connect(system_name):
     connections = False
     get_route_length_response = requests.get(
-        "https://api.eve-scout.com/v2/public/routes/signatures?from=Siseide&system_name=Thera&preference=safer"
+        f"https://api.eve-scout.com/v2/public/routes/signatures?from={system_name}&system_name=Thera&preference=shortest"
     )
     route_data = get_route_length_response.json()
     for paths in route_data:
         jumps = paths["jumps"]
         thera_enterance = paths["to"]
-        if paths["jumps"] <= 8 and not check_if_system_is_wormhole(
+        if paths["jumps"] <= 5 and not check_if_system_is_wormhole(
             system=thera_enterance
         ):
             connections = True
-            logging.debug(f"{thera_enterance} is {jumps} from Siseide!")
+            logging.debug(f"{thera_enterance} is {jumps} from {system_name}!")
 
-            yield f"{thera_enterance} is {jumps} from [siseide](https://eve-gatecheck.space/eve/#{thera_enterance}:Siseide:shortest)!"  # noqa: E501
+            yield f"{thera_enterance} is {jumps} from [{system_name}](https://eve-gatecheck.space/eve/#{thera_enterance}:{system_name.capitalize()}:shortest)!"  # noqa: E501
 
     if not connections:
-        logging.debug("No connections within 8 jumps from Siseide!")
-        yield "No connections within 8 jumps from Siseide!"
+        logging.debug(f"No connections within 5 jumps from {system_name}!")
+        yield f"No connections within 5 jumps from {system_name}!"
 
 
 def analyze_jita():
