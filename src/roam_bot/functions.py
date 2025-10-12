@@ -61,17 +61,19 @@ def analyze_thera_exits():
         )
         route_data = get_route_length_response.json()
         for path in route_data:
-            jumps = path["jumps"]
-            thera_exit = path["to"]
-            group = stagings[staging_system]["group"]
+            # pprint(path)
+            if path != "error":
+                jumps = path["jumps"]
+                thera_exit = path["to"]
+                group = stagings[staging_system]["group"]
 
-            if jumps <= 10 and not check_if_system_is_wormhole(system=thera_exit):
-                connections = True
-                logging.debug(
-                    f"{jumps} jumps from {group} in {staging_system} using {thera_exit}!"
-                )
-                link = f"https://eve-gatecheck.space/eve/#{thera_exit}:{staging_system}:shortest"
-                yield f"{jumps} jumps from {group} in {staging_system} using [{thera_exit}]({link})!"
+                if jumps <= 10 and not check_if_system_is_wormhole(system=thera_exit):
+                    connections = True
+                    logging.debug(
+                        f"{jumps} jumps from {group} in {staging_system} using {thera_exit}!"
+                    )
+                    link = f"https://eve-gatecheck.space/eve/#{thera_exit}:{staging_system}:shortest"
+                    yield f"{jumps} jumps from {group} in {staging_system} using [{thera_exit}]({link})!"
     if not connections:
         logging.debug(("No connections from target regions up!"))
         yield "No connections from target regions up!"
