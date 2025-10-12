@@ -117,7 +117,7 @@ def thera_connect(system_name):
     for paths in route_data:
         jumps = paths["jumps"]
         thera_enterance = paths["to"]
-        if paths["jumps"] <= 5 and not check_if_system_is_wormhole(
+        if paths["jumps"] <= 7 and not check_if_system_is_wormhole(
             system=thera_enterance
         ):
             connections = True
