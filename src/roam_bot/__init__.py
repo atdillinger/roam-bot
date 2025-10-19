@@ -61,8 +61,9 @@ def roam_turnur_local():
 
 @cli.command()
 @click.argument("system_name")
-def connect_local(system_name):
-    for message in thera_connect(system_name):
+@click.argument("jump_range", default=6)
+def connect_local(system_name, jump_range):
+    for message in thera_connect(system_name, jump_range):
         logging.info(message)
 
 
@@ -136,13 +137,13 @@ async def jita(ctx):
 
 
 @bot.command()
-async def connect(ctx, system_name):
+async def connect(ctx, system_name, jump_range=6):
     """Connection to/from system to Thera"""
 
     await ctx.send(f"Thera connections to {system_name}...")
 
     embed = discord.Embed()
-    messages = thera_connect(system_name)
+    messages = thera_connect(system_name, jump_range)
     for message in messages:
         embed.description = message
         await ctx.send(embed=embed)
