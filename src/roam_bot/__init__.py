@@ -6,13 +6,11 @@ import click
 import discord
 
 from .functions import (
-    analyze_jita,
-    analyze_thera_exits,
+    haul_to_jita,
     analyze_system,
     configure_discord_bot,
-    analyze_turnur_exits,
-    # analyze_siseide,
     thera_connect,
+    analyze_exits,
 )
 
 logging.basicConfig(level=logging.INFO)
@@ -43,19 +41,22 @@ def check_local(system_name):
 
 @cli.command()
 def jita_local():
-    for message in analyze_jita():
+    for message in haul_to_jita():
         logging.info(message)
 
 
 @cli.command()
-def roam_local():
-    for message in analyze_thera_exits():
-        logging.info(message)
+@click.argument("jump_range", default=6)
+@click.argument("source_system", default="thera")
+def roam_local(jump_range, source_system):
+    """
+    default 6 jumps from thera
+    override with turnur 10
+    override with thera 10
+    override with 10
+    """
 
-
-@cli.command()
-def roam_turnur_local():
-    for message in analyze_turnur_exits():
+    for message in analyze_exits(source_system, "roam", jump_range):
         logging.info(message)
 
 
@@ -65,12 +66,6 @@ def roam_turnur_local():
 def connect_local(system_name, jump_range):
     for message in thera_connect(system_name, jump_range):
         logging.info(message)
-
-
-# @cli.command()
-# def home_to_thera_local():
-#     for message in analyze_siseide():
-#         logging.info(message)
 
 
 # DISCORD
@@ -96,29 +91,20 @@ async def check(ctx, system_name):
 
 
 @bot.command()
-async def thera(ctx):
+async def roam(
+    ctx,
+    jump_range=6,
+    system_name="thera",
+):
     """Lists connections that we can roam from"""
 
     embed = discord.Embed()
-    messages = analyze_thera_exits()
+    messages = analyze_exits(system_name, "roam", jump_range)
     for message in messages:
         embed.description = message
         await ctx.send(embed=embed)
 
-    logging.info("!roam_thera complete...")
-
-
-@bot.command()
-async def turnur(ctx):
-    """Lists connections that we can roam from"""
-
-    embed = discord.Embed()
-    messages = analyze_turnur_exits()
-    for message in messages:
-        embed.description = message
-        await ctx.send(embed=embed)
-
-    logging.info("!roam_turnur complete...")
+    logging.info("!roam complete...")
 
 
 @bot.command()
@@ -128,7 +114,7 @@ async def jita(ctx):
     await ctx.send("Thera connections to Jita...")
 
     embed = discord.Embed()
-    messages = analyze_jita()
+    messages = haul_to_jita()
     for message in messages:
         embed.description = message
         await ctx.send(embed=embed)

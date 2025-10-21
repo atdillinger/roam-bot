@@ -48,7 +48,12 @@ def analyze_system(system_name: str):
         return f"No activity in the last hour in {system_name}!"
 
 
-def analyze_thera_exits():
+def analyze_exits(source_system, goal, jump_range):
+    # source system can be either thera or turnur
+    # maybe an enum
+
+    path = "shortest-gates" if goal == "roam" else "safest"
+
     with open("stagings.yml", "r") as file:
         stagings = yaml.safe_load(file)
 
@@ -57,52 +62,24 @@ def analyze_thera_exits():
     connections = False
     for staging_system in target_systems:
         get_route_length_response = requests.get(
-            f"https://api.eve-scout.com/v2/public/routes/signatures?from={staging_system}&system_name=Thera&preference=shortest-gates"  # noqa: E501
+            f"https://api.eve-scout.com/v2/public/routes/signatures?from={staging_system}&system_name={source_system}&preference={path}"  # noqa: E501
         )
-        route_data = get_route_length_response.json()
-        for path in route_data:
-            # pprint(path)
-            if path != "error":
+        if get_route_length_response:
+            route_data = get_route_length_response.json()
+            for path in route_data:
                 jumps = path["jumps"]
-                thera_exit = path["to"]
+                system_exit = path["to"]
                 group = stagings[staging_system]["group"]
 
-                if jumps <= 10 and not check_if_system_is_wormhole(system=thera_exit):
+                if jumps <= jump_range and not check_if_system_is_wormhole(
+                    system=system_exit
+                ):
                     connections = True
                     logging.debug(
-                        f"{jumps} jumps from {group} in {staging_system} using {thera_exit}!"
+                        f"{jumps} jumps from {group} in {staging_system} using {system_exit}!"
                     )
-                    link = f"https://eve-gatecheck.space/eve/#{thera_exit}:{staging_system}:shortest"
-                    yield f"{jumps} jumps from {group} in {staging_system} using [{thera_exit}]({link})!"
-    if not connections:
-        logging.debug(("No connections from target regions up!"))
-        yield "No connections from target regions up!"
-
-
-def analyze_turnur_exits():
-    with open("stagings.yml", "r") as file:
-        stagings = yaml.safe_load(file)
-
-    target_systems = list(stagings.keys())
-
-    connections = False
-    for staging_system in target_systems:
-        get_route_length_response = requests.get(
-            f"https://api.eve-scout.com/v2/public/routes/signatures?from={staging_system}&system_name=Turnur&preference=shortest-gates"  # noqa: E501
-        )
-        route_data = get_route_length_response.json()
-        for path in route_data:
-            jumps = path["jumps"]
-            thera_exit = path["to"]
-            group = stagings[staging_system]["group"]
-
-            if jumps <= 10 and not check_if_system_is_wormhole(system=thera_exit):
-                connections = True
-                logging.debug(
-                    f"{jumps} jumps from {group} in {staging_system} using {thera_exit}!"
-                )
-                link = f"https://eve-gatecheck.space/eve/#{thera_exit}:{staging_system}:shortest"
-                yield f"{jumps} jumps from {group} in {staging_system} using [{thera_exit}]({link})!"
+                    link = f"https://eve-gatecheck.space/eve/#{system_exit}:{staging_system}:shortest"
+                    yield f"{jumps} jumps from {group} in {staging_system} using [{system_exit}]({link})!"
     if not connections:
         logging.debug(("No connections from target regions up!"))
         yield "No connections from target regions up!"
@@ -130,7 +107,7 @@ def thera_connect(system_name: str, jump_range: int):
         yield f"No connections within {jump_range} jumps from {system_name}!"
 
 
-def analyze_jita():
+def haul_to_jita():
     connections = False
     get_route_length_response = requests.get(
         "https://api.eve-scout.com/v2/public/routes/signatures?from=Jita&system_name=Thera&preference=safer"
