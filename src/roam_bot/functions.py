@@ -76,10 +76,10 @@ def analyze_exits(source_system, goal, jump_range):
                 ):
                     connections = True
                     logging.debug(
-                        f"{jumps} jumps from {group} in {staging_system} using {system_exit}!"
+                        f"{jumps} jumps (using {source_system}) from {group} in {staging_system} using {system_exit}!"
                     )
                     link = f"https://eve-gatecheck.space/eve/#{system_exit}:{staging_system}:shortest"
-                    yield f"{jumps} jumps from {group} in {staging_system} using [{system_exit}]({link})!"
+                    yield f"{jumps} jumps (using {source_system}) from {group} in {staging_system} using [{system_exit}]({link})!"
     if not connections:
         logging.debug(("No connections from target regions up!"))
         yield "No connections from target regions up!"
