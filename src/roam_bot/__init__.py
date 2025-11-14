@@ -6,7 +6,6 @@ import click
 import discord
 
 from .functions import (
-    # haul_to_jita,
     analyze_system,
     configure_discord_bot,
     connect,

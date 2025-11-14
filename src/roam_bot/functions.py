@@ -3,6 +3,7 @@ import logging
 import re
 
 import discord
+from itertools import chain
 import requests
 import yaml
 from discord.ext import commands
@@ -48,38 +49,43 @@ def analyze_system(system_name: str):
         return f"No activity in the last hour in {system_name}!"
 
 
-def analyze_exits(source_system, goal, jump_range):
-    # source system can be either thera or turnur
-    # maybe an enum
-
+def analyze_exits(goal, jump_range):
     path = "shortest-gates" if goal == "roam" else "safest"
 
     with open("stagings.yml", "r") as file:
         stagings = yaml.safe_load(file)
 
-    target_systems = list(stagings.keys())
+    target_regions = list(stagings.keys())
+    target_systems = list(chain.from_iterable(stagings.values()))
 
     connections = False
     for staging_system in target_systems:
         get_route_length_response = requests.get(
-            f"https://api.eve-scout.com/v2/public/routes/signatures?from={staging_system}&system_name={source_system}&preference={path}"  # noqa: E501
+            f"https://api.eve-scout.com/v2/public/routes/signatures?from={staging_system}&system_name=Thera&preference={path}"  # noqa: E501
         )
         if get_route_length_response:
             route_data = get_route_length_response.json()
+            connection_regions = set(
+                [p["region_name"] for x in route_data for p in x["route"]]
+            )
+
+            if connection_regions.isdisjoint(set(target_regions)):
+                pprint("Enhance later...")
+
             for path in route_data:
                 jumps = path["jumps"]
                 system_exit = path["to"]
-                group = stagings[staging_system]["group"]
 
                 if jumps <= jump_range and not check_if_system_is_wormhole(
                     system=system_exit
                 ):
                     connections = True
                     logging.debug(
-                        f"{jumps} jumps (using {source_system}) from {group} in {staging_system} using {system_exit}!"
+                        f"{jumps} jumps using {system_exit} to {staging_system}!"
                     )
                     link = f"https://eve-gatecheck.space/eve/#{system_exit}:{staging_system}:shortest"
-                    yield f"{jumps} jumps (using {source_system}) from {group} in {staging_system} using [{system_exit}]({link})!"
+                    yield f"{jumps} jumps using [{system_exit}]({link}) to {staging_system}!"
+
     if not connections:
         logging.debug(("No connections from target regions up!"))
         yield "No connections from target regions up!"
