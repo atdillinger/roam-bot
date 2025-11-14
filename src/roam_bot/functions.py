@@ -85,12 +85,14 @@ def analyze_exits(source_system, goal, jump_range):
         yield "No connections from target regions up!"
 
 
-def thera_connect(system_name: str, jump_range: int):
+def connect(system_name: str, jump_range: int):
     connections = False
     get_route_length_response = requests.get(
         f"https://api.eve-scout.com/v2/public/routes/signatures?from={system_name}&system_name=Thera&preference=shortest"
     )
     route_data = get_route_length_response.json()
+    pprint(route_data)
+    # region name
     for paths in route_data:
         actual_jumps = paths["jumps"]
         thera_enterance = paths["to"]
@@ -105,25 +107,3 @@ def thera_connect(system_name: str, jump_range: int):
     if not connections:
         logging.debug(f"No connections within {jump_range} jumps from {system_name}!")
         yield f"No connections within {jump_range} jumps from {system_name}!"
-
-
-def haul_to_jita():
-    connections = False
-    get_route_length_response = requests.get(
-        "https://api.eve-scout.com/v2/public/routes/signatures?from=Jita&system_name=Thera&preference=safer"
-    )
-    route_data = get_route_length_response.json()
-    for paths in route_data:
-        jumps = paths["jumps"]
-        thera_enterance = paths["to"]
-        if paths["jumps"] <= 8 and not check_if_system_is_wormhole(
-            system=thera_enterance
-        ):
-            connections = True
-            logging.debug(f"{thera_enterance} is {jumps} from Jita!")
-
-            yield f"{thera_enterance} is {jumps} from [Jita](https://eve-gatecheck.space/eve/#{thera_enterance}:Jita:secure)!"  # noqa: E501
-
-    if not connections:
-        logging.debug("No connections within 8 jumps from Jita!")
-        yield "No connections within 8 jumps from Jita!"

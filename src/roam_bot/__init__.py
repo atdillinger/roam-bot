@@ -6,10 +6,10 @@ import click
 import discord
 
 from .functions import (
-    haul_to_jita,
+    # haul_to_jita,
     analyze_system,
     configure_discord_bot,
-    thera_connect,
+    connect,
     analyze_exits,
 )
 
@@ -40,12 +40,6 @@ def check_local(system_name):
 
 
 @cli.command()
-def jita_local():
-    for message in haul_to_jita():
-        logging.info(message)
-
-
-@cli.command()
 @click.argument("jump_range", default=6)
 @click.argument("source_system", default="thera")
 def roam_local(jump_range, source_system):
@@ -64,7 +58,7 @@ def roam_local(jump_range, source_system):
 @click.argument("system_name")
 @click.argument("jump_range", default=6)
 def connect_local(system_name, jump_range):
-    for message in thera_connect(system_name, jump_range):
+    for message in connect(system_name, jump_range):
         logging.info(message)
 
 
@@ -107,29 +101,14 @@ async def roam(
     logging.info("!roam complete...")
 
 
-@bot.command()
-async def jita(ctx):
-    """Closet Jita all HS"""
-
-    await ctx.send("Thera connections to Jita...")
-
-    embed = discord.Embed()
-    messages = haul_to_jita()
-    for message in messages:
-        embed.description = message
-        await ctx.send(embed=embed)
-
-    logging.info("!jita complete...")
-
-
-@bot.command()
-async def connect(ctx, system_name, jump_range=6):
-    """Connection to/from system to Thera"""
+@bot.command(name="connect")
+async def connect_to(ctx, system_name, jump_range=6):
+    """Connection to/from Thera"""
 
     await ctx.send(f"Thera connections to {system_name}...")
 
     embed = discord.Embed()
-    messages = thera_connect(system_name, jump_range)
+    messages = connect(system_name, jump_range)
     for message in messages:
         embed.description = message
         await ctx.send(embed=embed)
