@@ -49,9 +49,7 @@ def analyze_system(system_name: str):
         return f"No activity in the last hour in {system_name}!"
 
 
-def analyze_exits(goal, jump_range):
-    path = "shortest-gates" if goal == "roam" else "safest"
-
+def analyze_exits(jump_range):
     with open("stagings.yml", "r") as file:
         stagings = yaml.safe_load(file)
 
@@ -61,7 +59,7 @@ def analyze_exits(goal, jump_range):
     connections = False
     for staging_system in target_systems:
         get_route_length_response = requests.get(
-            f"https://api.eve-scout.com/v2/public/routes/signatures?from={staging_system}&system_name=Thera&preference={path}"  # noqa: E501
+            f"https://api.eve-scout.com/v2/public/routes/signatures?from={staging_system}&system_name=Thera&preference=shortest-gates"  # noqa: E501
         )
         if get_route_length_response:
             route_data = get_route_length_response.json()
@@ -94,11 +92,9 @@ def analyze_exits(goal, jump_range):
 def connect(system_name: str, jump_range: int):
     connections = False
     get_route_length_response = requests.get(
-        f"https://api.eve-scout.com/v2/public/routes/signatures?from={system_name}&system_name=Thera&preference=shortest"
+        f"https://api.eve-scout.com/v2/public/routes/signatures?from={system_name}&system_name=Thera&preference=shortest-kspace"
     )
     route_data = get_route_length_response.json()
-    pprint(route_data)
-    # region name
     for paths in route_data:
         actual_jumps = paths["jumps"]
         thera_enterance = paths["to"]

@@ -40,8 +40,7 @@ def check_local(system_name):
 
 @cli.command()
 @click.argument("jump_range", default=6)
-@click.argument("source_system", default="thera")
-def roam_local(jump_range, source_system):
+def roam_local(jump_range):
     """
     default 6 jumps from thera
     override with turnur 10
@@ -49,7 +48,7 @@ def roam_local(jump_range, source_system):
     override with 10
     """
 
-    for message in analyze_exits(source_system, "roam", jump_range):
+    for message in analyze_exits(jump_range):
         logging.info(message)
 
 
@@ -87,12 +86,11 @@ async def check(ctx, system_name):
 async def roam(
     ctx,
     jump_range=6,
-    system_name="thera",
 ):
     """Lists connections that we can roam from"""
 
     embed = discord.Embed()
-    messages = analyze_exits(system_name, "roam", jump_range)
+    messages = analyze_exits(jump_range)
     for message in messages:
         embed.description = message
         await ctx.send(embed=embed)
