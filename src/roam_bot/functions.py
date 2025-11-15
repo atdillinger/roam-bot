@@ -57,32 +57,33 @@ def analyze_exits(jump_range):
     target_systems = list(chain.from_iterable(stagings.values()))
 
     connections = False
-    for staging_system in target_systems:
-        get_route_length_response = requests.get(
-            f"https://api.eve-scout.com/v2/public/routes/signatures?from={staging_system}&system_name=Thera&preference=shortest-gates"  # noqa: E501
-        )
-        if get_route_length_response:
-            route_data = get_route_length_response.json()
-            connection_regions = set(
-                [p["region_name"] for x in route_data for p in x["route"]]
+    for static in ["Thera", "Turnur"]:
+        for staging_system in target_systems:
+            get_route_length_response = requests.get(
+                f"https://api.eve-scout.com/v2/public/routes/signatures?from={staging_system}&system_name={static.capitalize()}&preference=shortest-gates"  # noqa: E501
             )
+            if get_route_length_response:
+                route_data = get_route_length_response.json()
+                connection_regions = set(
+                    [p["region_name"] for x in route_data for p in x["route"]]
+                )
 
-            if connection_regions.isdisjoint(set(target_regions)):
-                pprint("Enhance later...")
+                if connection_regions.isdisjoint(set(target_regions)):
+                    pprint("Enhance later...")
 
-            for path in route_data:
-                jumps = path["jumps"]
-                system_exit = path["to"]
+                for path in route_data:
+                    jumps = path["jumps"]
+                    system_exit = path["to"]
 
-                if jumps <= jump_range and not check_if_system_is_wormhole(
-                    system=system_exit
-                ):
-                    connections = True
-                    logging.debug(
-                        f"{jumps} jumps using {system_exit} to {staging_system}!"
-                    )
-                    link = f"https://eve-gatecheck.space/eve/#{system_exit}:{staging_system}:shortest"
-                    yield f"{jumps} jumps using [{system_exit}]({link}) to {staging_system}!"
+                    if jumps <= jump_range and not check_if_system_is_wormhole(
+                        system=system_exit
+                    ):
+                        connections = True
+                        logging.debug(
+                            f"{static}: {jumps} jumps using {system_exit} to {staging_system}!"
+                        )
+                        link = f"https://eve-gatecheck.space/eve/#{system_exit}:{staging_system}:shortest"
+                        yield f"{static}: {jumps} jumps using [{system_exit}]({link}) to {staging_system}!"
 
     if not connections:
         logging.debug(("No connections from target regions up!"))
@@ -91,21 +92,26 @@ def analyze_exits(jump_range):
 
 def connect(system_name: str, jump_range: int):
     connections = False
-    get_route_length_response = requests.get(
-        f"https://api.eve-scout.com/v2/public/routes/signatures?from={system_name}&system_name=Thera&preference=shortest-kspace"
-    )
-    route_data = get_route_length_response.json()
-    for paths in route_data:
-        actual_jumps = paths["jumps"]
-        thera_enterance = paths["to"]
-        if actual_jumps <= jump_range and not check_if_system_is_wormhole(
-            system=thera_enterance
-        ):
-            connections = True
-            logging.debug(f"{thera_enterance} is {actual_jumps} from {system_name}!")
+    for static in ["Thera", "Turnur"]:
+        get_route_length_response = requests.get(
+            f"https://api.eve-scout.com/v2/public/routes/signatures?from={system_name}&system_name={static}&preference=shortest-kspace"
+        )
+        route_data = get_route_length_response.json()
+        for paths in route_data:
+            actual_jumps = paths["jumps"]
+            thera_enterance = paths["to"]
+            if actual_jumps <= jump_range and not check_if_system_is_wormhole(
+                system=thera_enterance
+            ):
+                connections = True
+                logging.debug(
+                    f"{static}: {thera_enterance} is {actual_jumps} from {system_name}!"
+                )
 
-            yield f"{thera_enterance} is {actual_jumps} from [{system_name}](https://eve-gatecheck.space/eve/#{thera_enterance}:{system_name.capitalize()}:shortest)!"  # noqa: E501
+                yield f"{static}: {thera_enterance} is {actual_jumps} from [{system_name}](https://eve-gatecheck.space/eve/#{thera_enterance}:{system_name.capitalize()}:shortest)!"  # noqa: E501
 
-    if not connections:
-        logging.debug(f"No connections within {jump_range} jumps from {system_name}!")
-        yield f"No connections within {jump_range} jumps from {system_name}!"
+        if not connections:
+            logging.debug(
+                f"No {static} connections within {jump_range} jumps from {system_name}!"
+            )
+            yield f"No {static} connections within {jump_range} jumps from {system_name}!"

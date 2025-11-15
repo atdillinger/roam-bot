@@ -102,7 +102,7 @@ async def roam(
 async def connect_to(ctx, system_name, jump_range=6):
     """Connection to/from Thera"""
 
-    await ctx.send(f"Thera connections to {system_name}...")
+    await ctx.send(f"Connections to {system_name}...")
 
     embed = discord.Embed()
     messages = connect(system_name, jump_range)
