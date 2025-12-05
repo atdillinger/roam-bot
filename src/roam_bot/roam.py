@@ -1,3 +1,4 @@
+from pprint import pprint
 import logging
 
 import requests
@@ -37,6 +38,11 @@ def roam(jump_range: int):
                             system=system_exit
                         ):
                             connections = True
+                            remaining_hours = [
+                                x["remaining_hours"]
+                                for x in get_thera_whs.json()
+                                if x["id"] == path["signature_id"]
+                            ]
                             out_sig = [
                                 x["out_signature"]
                                 for x in get_thera_whs.json()
@@ -46,6 +52,7 @@ def roam(jump_range: int):
                             link = f"https://eve-gatecheck.space/eve/#{system_exit}:{system}:shortest"
                             message = f"""
                                 [{jumps} jumps to {system} from {system_exit}({out_sig[0]}) using {static}!]({link})
+                                {remaining_hours[0]} hours remain...
                                 region: {region}
                                 notes: {data["notes"]}
                             """

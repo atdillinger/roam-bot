@@ -29,6 +29,12 @@ def connect(system_name: str, jump_range: int):
                 "https://api.eve-scout.com/v2/public/signatures"
             )
 
+            remaining_hours = [
+                x["remaining_hours"]
+                for x in get_thera_whs.json()
+                if x["id"] == path["signature_id"]
+            ]
+
             out_sig = [
                 x["out_signature"]
                 for x in get_thera_whs.json()
@@ -47,6 +53,7 @@ def connect(system_name: str, jump_range: int):
 
                 message = f"""
                     [{actual_jumps} jumps to {system_name} from {thera_enterance}({out_sig[0]}) using {static}!]({link})
+                    {remaining_hours[0]} hours remain...
                 """
 
                 # message = f"[{static}: {thera_enterance} ({out_sig[0]}) is {actual_jumps} from {system_name}!]({link})"  # noqa: E501
