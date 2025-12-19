@@ -32,7 +32,7 @@ def connect(system_name: str, jump_range: int):
             remaining_hours = [
                 x["remaining_hours"]
                 for x in get_thera_whs.json()
-                if x["id"] == path["signature_id"]
+                if x["id"] == paths["signature_id"]
             ]
 
             out_sig = [
