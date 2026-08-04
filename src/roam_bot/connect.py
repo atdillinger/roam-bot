@@ -58,7 +58,7 @@ def connect(system_name: str, jump_range: int):
                     {remaining_hours[0]} hours remain...
                 """
 
-                # message = f"[{static}: {thera_enterance} ({out_sig[0]}) is {actual_jumps} from {system_name}!]({link})"  # noqa: E501
+                # message = f"[{static}: {thera_enterance} ({out_sig[0]}) is {actual_jumps} from {system_name}!]({link})"
                 yield message
 
         if not connections:

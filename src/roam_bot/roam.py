@@ -21,7 +21,7 @@ def roam(jump_range: int):
         for region, data in stagings.items():
             for system in data["systems"]:
                 get_route_length_response = requests.get(
-                    f"https://api.eve-scout.com/v2/public/routes/signatures?from={system}&system_name={static.capitalize()}&preference=shortest-gates"  # noqa: E501
+                    f"https://api.eve-scout.com/v2/public/routes/signatures?from={system}&system_name={static.capitalize()}&preference=shortest-gates"
                 )
 
                 get_thera_whs = requests.get(
