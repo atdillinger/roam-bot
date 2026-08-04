@@ -512,7 +512,7 @@ dev = [
 
 [package.metadata]
 requires-dist = [
-    { name = "aiohttp", specifier = ">=3.14.0" },
+    { name = "aiohttp", specifier = ">=3.14.3" },
     { name = "click", specifier = "==8.3.1" },
     { name = "discord-py", specifier = "==2.6.4" },
     { name = "pyyaml", specifier = "==6.0.3" },
