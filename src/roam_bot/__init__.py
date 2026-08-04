@@ -5,11 +5,11 @@ import click
 import discord
 from discord.ext import commands
 
+from .connect import connect
 from .lossboard import (
     analyze_system,
 )
 from .roam import roam
-from .connect import connect
 
 logger = logging.basicConfig(level=logging.INFO)
 
