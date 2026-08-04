@@ -5,6 +5,8 @@ import requests
 from .eve_data import LIVABLE_WORMHOLES
 from .wormhole import check_if_system_is_wormhole
 
+logger = logging.getLogger(__name__)
+
 
 def connect(system_name: str, jump_range: int):
     connections = False
@@ -45,7 +47,7 @@ def connect(system_name: str, jump_range: int):
                 system=thera_enterance
             ):
                 connections = True
-                logging.debug(
+                logger.debug(
                     f"{static}: {thera_enterance} is {actual_jumps} from {system_name}!"
                 )
 
@@ -63,6 +65,6 @@ def connect(system_name: str, jump_range: int):
             message = (
                 f"No {static} connections within {jump_range} jumps from {system_name}!"
             )
-            logging.debug(message)
+            logger.debug(message)
 
             yield message

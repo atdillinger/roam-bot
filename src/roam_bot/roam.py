@@ -6,6 +6,7 @@ import yaml
 from .eve_data import LIVABLE_WORMHOLES
 from .wormhole import check_if_system_is_wormhole
 
+logger = logging.getLogger(__name__)
 
 
 def roam(jump_range: int):
@@ -15,7 +16,7 @@ def roam(jump_range: int):
     message = None
     connections = False
     for static in LIVABLE_WORMHOLES:
-        logging.info(f"Analyzing {static}")
+        logger.info(f"Analyzing {static}")
 
         for region, data in stagings.items():
             for system in data["systems"]:
@@ -58,9 +59,9 @@ def roam(jump_range: int):
                             """
                             yield message
 
-                            logging.debug(message)
+                            logger.debug(message)
 
     if not connections:
-        logging.debug(("No connections from target regions up!"))
+        logger.debug("No connections from target regions up!")
         message = "No connections from target regions up! - Use Signal"
         yield message

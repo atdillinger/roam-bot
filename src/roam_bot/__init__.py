@@ -11,7 +11,7 @@ from .lossboard import (
 from .roam import roam
 from .connect import connect
 
-logging.basicConfig(level=logging.INFO)
+logger = logging.basicConfig(level=logging.INFO)
 
 description = "Discord Bot for Analyzing Roaming from Thera"
 discord.VoiceClient.warn_nacl = False
@@ -43,24 +43,24 @@ def start():
 @cli.command()
 @click.argument("system_name")
 def check_local(system_name):
-    logging.info(analyze_system(system_name))
+    logger.info(analyze_system(system_name))
 
 
 @cli.command()
 @click.argument("jump_range", default=GLOBAL_JUMP_RANGE)
 def roam_local(jump_range):
     for message in roam(jump_range):
-        logging.info(message)
+        logger.info(message)
 
 
 @cli.command()
 @click.argument("system_name")
 @click.argument("jump_range", default=GLOBAL_JUMP_RANGE)
 def connect_local(system_name, jump_range):
-    logging.info("starting connect local...")
+    logger.info("starting connect local...")
     for message in connect(system_name, jump_range):
-        logging.info(message)
-    logging.info("finished connect local...")
+        logger.info(message)
+    logger.info("finished connect local...")
 
 
 @bot.command(name="check")
@@ -73,7 +73,7 @@ async def check_bot(ctx, system_name):
     embed.description = message
     await ctx.send(embed=embed)
 
-    logging.info(f"!check for {system_name} complete...")
+    logger.info(f"!check for {system_name} complete...")
 
 
 @bot.command(name="roam")
@@ -83,7 +83,7 @@ async def roam_bot(
 ):
     """Lists connections that we can roam from"""
 
-    logging.info("!roam starting...")
+    logger.info("!roam starting...")
     embed = discord.Embed()
 
     await ctx.send(f"Analyzing Thera connections within {jump_range} jumps")
@@ -95,14 +95,14 @@ async def roam_bot(
 
     await ctx.send("Finished analyzing Thera connections")
 
-    logging.info("!roam complete...")
+    logger.info("!roam complete...")
 
 
 @bot.command(name="connect")
 async def connect_bot(ctx, system_name, jump_range=GLOBAL_JUMP_RANGE):
     """Connection to/from Thera"""
 
-    logging.info("!connect starting...")
+    logger.info("!connect starting...")
     await ctx.send(
         f"Finding Thera connections to {system_name} within {jump_range} jumps"
     )
@@ -114,4 +114,4 @@ async def connect_bot(ctx, system_name, jump_range=GLOBAL_JUMP_RANGE):
         await ctx.send(embed=embed)
 
     await ctx.send("Finished analyzing Thera connections")
-    logging.info("!connect complete...")
+    logger.info("!connect complete...")
