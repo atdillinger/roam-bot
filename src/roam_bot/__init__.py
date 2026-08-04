@@ -11,7 +11,8 @@ from .lossboard import (
 )
 from .roam import roam
 
-logger = logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
+logging.basicConfig(level=logging.INFO)
 
 description = "Discord Bot for Analyzing Roaming from Thera"
 discord.VoiceClient.warn_nacl = False
