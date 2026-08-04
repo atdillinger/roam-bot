@@ -2,7 +2,9 @@ import logging
 
 import requests
 
-from .EVE_DATA import GALAXY_MAP
+from .eve_data import GALAXY_MAP
+
+logger = logging.getLogger(__name__)
 
 
 def analyze_system(system_name: str):
@@ -21,13 +23,13 @@ def analyze_system(system_name: str):
 
     if activity:
         losses = len(activity[0])
-        logging.debug(
+        logger.debug(
             f"[There have been {losses} losses in the last hour in {system_name}!](https://zkillboard.com/system/{system_id}/)!"
         )
-        message = f"[There have been {losses} losses in the last hour in {system_name}!](https://zkillboard.com/system/{system_id}/)!"  # noqa: E501
+        message = f"[There have been {losses} losses in the last hour in {system_name}!](https://zkillboard.com/system/{system_id}/)!"
 
     else:
-        logging.debug(f"No activity in the last hour in {system_name}!")
+        logger.debug(f"No activity in the last hour in {system_name}!")
         message = f"No activity in the last hour in {system_name}!"
 
     return message
