@@ -2,7 +2,7 @@ import logging
 
 import requests
 
-from .EVE_DATA import LIVABLE_WORMHOLES
+from .eve_data import LIVABLE_WORMHOLES
 from .wormhole import check_if_system_is_wormhole
 
 

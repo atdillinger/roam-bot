@@ -2,7 +2,7 @@ import logging
 
 import requests
 
-from .EVE_DATA import GALAXY_MAP
+from .eve_data import GALAXY_MAP
 
 
 def analyze_system(system_name: str):
