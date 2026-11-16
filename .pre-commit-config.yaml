@@ -1,3 +1,4 @@
+---
 repos:
   - repo: https://github.com/pre-commit/pre-commit-hooks
     rev: v6.0.0
@@ -42,10 +43,11 @@ repos:
     rev: v8.24.2
     hooks:
       - id: gitleaks
-  - repo: https://github.com/adrienverge/yamllint
-    rev: v1.38.0
-    hooks:
-      - id: yamllint
+  # - repo: https://github.com/adrienverge/yamllint
+  #   rev: v1.38.0
+  #   hooks:
+  #     - id: yamllint
+  #       args: [-c=.yamllint] # compat issue with current nvim formatter...
 
   # - repo: https://github.com/hadolint/hadolint - todo install work
   #   rev: v2.15.1
