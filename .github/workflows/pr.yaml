@@ -21,8 +21,8 @@ jobs:
       - name: Install the project
         run: uv sync --dev
 
-      - name: Run tests
-        run: uvx ruff check
+      - name: Install python...
+        uses: actions/setup-python@v3
 
-      - name: Run tests
-        run: uv run pytest tests
+      - name: Install and Run pre-commit
+        uses: pre-commit/action@v3.0.1

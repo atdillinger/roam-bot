@@ -24,8 +24,8 @@ repos:
       - id: name-tests-test
       - id: mixed-line-ending
         args: [--fix=no]
-      # - id: no-commit-to-branch # i do want this but for now... YAGNI
-      #   args: [--branch, main]
+      - id: no-commit-to-branch # i do want this but for now... YAGNI
+        args: [--branch, main]
       - id: forbid-submodules
 
   - repo: https://github.com/astral-sh/ruff-pre-commit
