@@ -19,8 +19,8 @@ dependencies = [
 roam-bot = "roam_bot:cli"
 
 [build-system]
-requires = ["hatchling"]
-build-backend = "hatchling.build"
+requires = ["uv_build>=0.13.8,<0.14"]
+build-backend = "uv_build"
 
 [dependency-groups]
 dev = [
